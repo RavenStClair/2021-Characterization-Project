@@ -1,0 +1,12 @@
+[
+  {
+    "name": "characterization-project (in project characterization-project)",
+    "file": "C:\\Users\\Raven\\Desktop\\FIRST-Robotics\\Characterization\\characterization-project\\build\\libs\\characterization-project.jar",
+    "extensions": [
+      "C:\\Users\\Raven\\Desktop\\FIRST-Robotics\\Characterization\\characterization-project\\build\\tmp\\expandedArchives\\halsim_gui-2021.1.2-windowsx86-64.zip_a65f029882460810c7d9fdb675bf2f07\\windows\\x86-64\\shared\\halsim_gui.dll"
+    ],
+    "env": {},
+    "librarydir": "C:\\Users\\Raven\\Desktop\\FIRST-Robotics\\Characterization\\characterization-project\\build\\tmp\\jniExtractDir",
+    "mainclass": "dc.Main"
+  }
+]
