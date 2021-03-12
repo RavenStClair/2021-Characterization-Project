@@ -22,6 +22,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
@@ -48,6 +49,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -62,10 +65,11 @@ public class Robot extends TimedRobot {
   static private double GEARING = 6;
   
   private double encoderConstant = 1 / ((2 * 72) / (5.65 * Math.PI));
-  //private final Field2d field = new Field2d();
+  private final Field2d field = new Field2d();
 
   Joystick stick;
   DifferentialDrive drive;
+  DifferentialDriveOdometry odometry;
 
 
   Supplier<Double> leftEncoderPosition;
@@ -184,6 +188,11 @@ public class Robot extends TimedRobot {
     // Set the update rate instead of using flush because of a ntcore bug
     // -> probably don't want to do this on a robot in competition
     NetworkTableInstance.getDefault().setUpdateRate(0.010);
+
+    odometry = new DifferentialDriveOdometry(new Rotation2d(), new Pose2d(0.0, 0.0,new Rotation2d()));
+  
+
+    
   }
 
   @Override
@@ -199,6 +208,7 @@ public class Robot extends TimedRobot {
     System.out.println("Robot disabled");
     System.out.println("Collected : " + counter + " in " + elapsedTime + " seconds");
     data = "";
+    
   }
 
   @Override
@@ -212,7 +222,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("l_encoder_rate", leftEncoderRate.get());
     SmartDashboard.putNumber("r_encoder_pos", -rightEncoderPosition.get());
     SmartDashboard.putNumber("r_encoder_rate", rightEncoderRate.get());
-    //SmartDashboard.putData("field", field);
+    odometry.update(gyro.getRotation2d(), leftEncoderPosition.get(), rightEncoderPosition.get());
+    field.setRobotPose(odometry.getPoseMeters());
+    System.out.println(odometry.getPoseMeters());
+    
 
   }
 
@@ -224,6 +237,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     drive.arcadeDrive(-stick.getRawAxis(0), stick.getRawAxis(1));
+    SmartDashboard.putData("field", field);
   }
 
   @Override

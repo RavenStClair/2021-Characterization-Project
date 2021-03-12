@@ -12,7 +12,8 @@ public class SimEnabler implements Sendable {
   DriverStationSim sim = new DriverStationSim();
 
   public SimEnabler() {
-    sim.setAutonomous(true);
+    sim.setAutonomous(false);
+    
   }
 
   public void setEnabled(boolean enabled) {
