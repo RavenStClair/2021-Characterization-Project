@@ -65,7 +65,9 @@ public class Robot extends TimedRobot {
   static private int ENCODER_EPR = 1;
   static private double GEARING = 6;
 
+
   private double encoderConstant = 1 / ((2 * 72) / (5.65 * Math.PI));
+
   //private final Field2d field = new Field2d();
 
   Joystick stick;
@@ -85,11 +87,6 @@ public class Robot extends TimedRobot {
   ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
   String data = "";
-  // kS = 0.137
-  // kV = 0.00129
-  // kA = 9.51e-5
-  // r-squared = .999
-  // Track Width = 3.76472098
   int counter = 0;
   double startTime = 0;
   double priorAutospeed = 0;
@@ -201,6 +198,8 @@ public class Robot extends TimedRobot {
     System.out.println("Robot disabled");
     System.out.println("Collected : " + counter + " in " + elapsedTime + " seconds");
     data = "";
+    Pose2d initpos = new Pose2d(0,0,Rotation2d.fromDegrees(0));
+    odometry.resetPosition(initpos, Rotation2d.fromDegrees(0));
 
   }
 
@@ -230,7 +229,12 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     odometry.update(gyro.getRotation2d(), leftEncoderPosition.get(), rightEncoderPosition.get());
     drive.arcadeDrive(-stick.getRawAxis(0), stick.getRawAxis(1));
-    //SmartDashboard.putData("field", field);
+    SmartDashboard.putNumber("roboPosX", odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("roboPosY", odometry.getPoseMeters().getY()); 
+    SmartDashboard.putNumber("roboPosR", odometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("roboPosTY", odometry.getPoseMeters().getTranslation().getX());
+    SmartDashboard.putNumber("roboPosTX", odometry.getPoseMeters().getTranslation().getY());
+
   }
 
   @Override
