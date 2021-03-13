@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
   static private double GEARING = 6;
 
   private double encoderConstant = 1 / ((2 * 72) / (5.65 * Math.PI));
-  private final Field2d field = new Field2d();
+  //private final Field2d field = new Field2d();
 
   Joystick stick;
   DifferentialDrive drive;
@@ -216,7 +216,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("r_encoder_pos", -rightEncoderPosition.get());
     SmartDashboard.putNumber("r_encoder_rate", rightEncoderRate.get());
     odometry.update(gyro.getRotation2d(), leftEncoderPosition.get(), rightEncoderPosition.get());
-    field.setRobotPose(odometry.getPoseMeters());
+    //field.setRobotPose(odometry.getPoseMeters());
     System.out.println(odometry.getPoseMeters());
 
   }
@@ -228,8 +228,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    odometry.update(gyro.getRotation2d(), leftEncoderPosition.get(), rightEncoderPosition.get());
     drive.arcadeDrive(-stick.getRawAxis(0), stick.getRawAxis(1));
-    SmartDashboard.putData("field", field);
+    //SmartDashboard.putData("field", field);
   }
 
   @Override
