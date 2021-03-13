@@ -126,7 +126,7 @@ public class Robot extends TimedRobot {
         encoder.setPositionConversionFactor(encoderConstant);
         rightEncoderPosition = encoder::getPosition;
         rightEncoderRate = encoder::getVelocity;
-
+        
         break;
       case LEFT:
         encoder = motor.getEncoder();
@@ -156,10 +156,10 @@ public class Robot extends TimedRobot {
     stick = new Joystick(0);
     
     // create left motor
-    CANSparkMax leftMotor = setupCANSparkMax(1, Sides.LEFT,false);
-
+    CANSparkMax leftMotor = setupCANSparkMax(1, Sides.LEFT,true);
+    
     ArrayList<SpeedController> leftMotors = new ArrayList<SpeedController>();
-    leftMotors.add(setupCANSparkMax(2, Sides.FOLLOWER, false));
+    leftMotors.add(setupCANSparkMax(2, Sides.FOLLOWER, true));
     SpeedController[] leftMotorControllers = new SpeedController[leftMotors.size()];
     leftMotorControllers = leftMotors.toArray(leftMotorControllers);
     SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftMotor, leftMotorControllers);
@@ -210,7 +210,7 @@ public class Robot extends TimedRobot {
     // feedback for users, but not used by the control program
     SmartDashboard.putNumber("l_encoder_pos", leftEncoderPosition.get());
     SmartDashboard.putNumber("l_encoder_rate", leftEncoderRate.get());
-    SmartDashboard.putNumber("r_encoder_pos", -rightEncoderPosition.get());
+    SmartDashboard.putNumber("r_encoder_pos", rightEncoderPosition.get());
     SmartDashboard.putNumber("r_encoder_rate", rightEncoderRate.get());
     //SmartDashboard.putData("field", field);
 
@@ -250,7 +250,7 @@ public class Robot extends TimedRobot {
     double leftPosition = leftEncoderPosition.get();
     double leftRate = leftEncoderRate.get();
 
-    double rightPosition = -rightEncoderPosition.get();
+    double rightPosition = rightEncoderPosition.get();
     double rightRate = rightEncoderRate.get();
 
     double battery = RobotController.getBatteryVoltage();
