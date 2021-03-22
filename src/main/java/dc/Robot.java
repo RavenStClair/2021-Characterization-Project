@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
   static private int ENCODER_EPR = 1;
   static private double GEARING = 6;
   
-  private double encoderConstant = 1 / ((2 * 72) / (5.65 * Math.PI));
+  private double encoderConstant = (5.65*Math.PI)/(2*72)/3.28;
   //private final Field2d field = new Field2d();
 
   Joystick stick;
@@ -108,6 +108,7 @@ public class Robot extends TimedRobot {
     // create new motor and set neutral modes (if needed)
     CANSparkMax motor = new CANSparkMax(port, MotorType.kBrushless);
     motor.setInverted(inverted);
+    motor.setIdleMode(IdleMode.kBrake);
     
     // setup encoder if motor isn't a follower
     if (side != Sides.FOLLOWER) {
@@ -163,9 +164,9 @@ public class Robot extends TimedRobot {
     SpeedController[] leftMotorControllers = new SpeedController[leftMotors.size()];
     leftMotorControllers = leftMotors.toArray(leftMotorControllers);
     SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftMotor, leftMotorControllers);
-    CANSparkMax rightMotor = setupCANSparkMax(3, Sides.FOLLOWER, false);
+    CANSparkMax rightMotor = setupCANSparkMax(3, Sides.RIGHT, false);
     ArrayList<SpeedController> rightMotors = new ArrayList<SpeedController>();
-    rightMotors.add(setupCANSparkMax(4, Sides.RIGHT, false));
+    rightMotors.add(setupCANSparkMax(4, Sides.FOLLOWER, false));
     SpeedController[] rightMotorControllers = new SpeedController[rightMotors.size()];
     rightMotorControllers = rightMotors.toArray(rightMotorControllers);
     SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightMotor, rightMotorControllers);
